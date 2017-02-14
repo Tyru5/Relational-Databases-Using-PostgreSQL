@@ -89,7 +89,7 @@ CREATE TABLE thisMusicProduction.Album(
     copyrightDate   DATE NOT NULL,
     speed           INTERVAL MINUTE,
     title           varchar(25),
-    ssn             varchar(11) NOT NULL REFERENCES thisMusicProduction.Musicians( ssn ) ON DELETE CASCADE
+    Musician_ssn    varchar(11) NOT NULL REFERENCES thisMusicProduction.Musicians( ssn ) ON DELETE CASCADE -- Producer relationship
 
 );
 
@@ -101,7 +101,7 @@ INSERT INTO thisMusicProduction.Album(
     copyrightDate,
     speed,
     title,
-    ssn
+    Musician_ssn
 )
 VALUES
 ( 1,'2010-07-29','10:30','For Lack of a Better Name','159-52-1563' ),
@@ -124,7 +124,7 @@ CREATE TABLE thisMusicProduction.Songs(
     songId integer PRIMARY KEY,
     title  varchar(30),
     suthor varchar(10),
-    albumIdentifier INTEGER NOT NULL REFERENCES thisMusicProduction.Album( albumIdentifier ) ON DELETE CASCADE -- Appears relationship.
+    Album_albumIdentifier INTEGER NOT NULL REFERENCES thisMusicProduction.Album( albumIdentifier ) ON DELETE CASCADE -- Appears relationship.
 
 );
 
@@ -135,7 +135,7 @@ INSERT INTO thisMusicProduction.Songs(
     songId,
     title,
     suthor,
-    albumIdentifier
+    Album_albumIdentifier
 )
 VALUES
 (1,'Strobe','deadmau5'               , 1),
@@ -209,17 +209,17 @@ VALUES
 
 CREATE TABLE thisMusicProduction.Perform(
 
-    ssn varchar(11) REFERENCES thisMusicProduction.Musicians(ssn) ON UPDATE CASCADE, -- update automatically if upddated in referenced / parent table.
-    songId integer  REFERENCES thisMusicProduction.Songs(songId) ON UPDATE CASCADE,
-    PRIMARY KEY(ssn,songId)
+    Musician_ssn varchar(11) REFERENCES thisMusicProduction.Musicians( ssn ) ON UPDATE CASCADE, -- update automatically if upddated in referenced / parent table.
+    Songs_songId integer  REFERENCES thisMusicProduction.Songs( songId ) ON UPDATE CASCADE,
+    PRIMARY KEY( Musician_ssn,Songs_songId )
 
 );
 
 \echo '\nInserting values into Perfom table. Values are *dependent* on values from other previously defined tables. Specifically Musicians and Songs.'
 
 INSERT INTO thisMusicProduction.Perform(
-    ssn,
-    songId
+    Musician_ssn,
+    Songs_songId
 )
 Values
 ('147-45-4789',1),
@@ -238,17 +238,17 @@ Values
 
 CREATE TABLE thisMusicProduction.Plays(
 
-    ssn varchar(11) REFERENCES thisMusicProduction.Musicians(ssn) ON UPDATE CASCADE,
-    instrid integer REFERENCES thisMusicProduction.Instrument(instrid) ON UPDATE CASCADE,
-    PRIMARY KEY(ssn,instrid)
+    Musician_ssn varchar(11) REFERENCES thisMusicProduction.Musicians( ssn ) ON UPDATE CASCADE,
+    Instrument_instrid integer REFERENCES thisMusicProduction.Instrument( instrid ) ON UPDATE CASCADE,
+    PRIMARY KEY( Musician_ssn, Instrument_instrid )
 
 );
 
 \echo '\nInserting values into Plays table. Values are *dependent* on values from other previously defined tables. Specifically  Musicians and Instrument.'
 
 INSERT INTO thisMusicProduction.Plays(
-    ssn,
-    instrid
+    Musician_ssn,
+    Instrument_instrid
 )
 VALUES
 ('159-52-1563',2),
@@ -265,17 +265,17 @@ VALUES
 
 CREATE TABLE thisMusicProduction.Home(
 
-    address varchar(45) REFERENCES thisMusicProduction.Place( address ) ON UPDATE CASCADE,
-    phone_no TEXT UNIQUE NOT NULL REFERENCES thisMusicProduction.Telephone( phone_no ) ON UPDATE CASCADE,
-    PRIMARY KEY( address )
+    Place_address varchar(45) REFERENCES thisMusicProduction.Place( address ) ON UPDATE CASCADE,
+    Telephone_phone_no TEXT UNIQUE NOT NULL REFERENCES thisMusicProduction.Telephone( phone_no ) ON UPDATE CASCADE,
+    PRIMARY KEY( Place_address )
 
 );
 
 \echo '\nInserting values into Home table. Values are *dependent* on values from other previously defined tables. Specifically  \"Place\" and \"Telephone\".'
 
 INSERT INTO thisMusicProduction.Home(
-    address,
-    phone_no
+    Place_address,
+    Telephone_phone_no
 )
 VALUES
 ('3140. Ontario drive',          '303-653-5478'),
@@ -293,9 +293,9 @@ VALUES
 
 CREATE TABLE thisMusicProduction.Lives(
 
-    ssn varchar(11) REFERENCES thisMusicProduction.Musicians(ssn) ON UPDATE CASCADE,
-    address varchar(45) REFERENCES thisMusicProduction.Home( address ) ON UPDATE CASCADE,
-    PRIMARY KEY( ssn, address )
+    Musician_ssn varchar(11) REFERENCES thisMusicProduction.Musicians(ssn) ON UPDATE CASCADE,
+    Place_address varchar(45) REFERENCES thisMusicProduction.Home( Place_address ) ON UPDATE CASCADE,
+    PRIMARY KEY( Musician_ssn, Place_address )
 
 );
 
@@ -303,8 +303,8 @@ CREATE TABLE thisMusicProduction.Lives(
 
 INSERT INTO thisMusicProduction.Lives(
 
-    ssn,
-    address
+    Musician_ssn,
+    Place_address
 
 )
 Values
