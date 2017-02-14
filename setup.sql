@@ -124,7 +124,7 @@ CREATE TABLE thisMusicProduction.Songs(
     songId integer PRIMARY KEY,
     title  varchar(30),
     suthor varchar(10),
-    albumIdentifier INTEGER NOT NULL REFERENCES thisMusicProduction.Album( albumIdentifier ) ON DELETE CASCADE
+    albumIdentifier INTEGER NOT NULL REFERENCES thisMusicProduction.Album( albumIdentifier ) ON DELETE CASCADE -- Appears relationship.
 
 );
 
