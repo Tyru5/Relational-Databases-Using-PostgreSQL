@@ -3,11 +3,11 @@
 
 -- Good Etique --
 
-\echo 'Dropping schema if it already exists.'
+\echo '\nDropping schema if it already exists.'
 
 DROP SCHEMA IF EXISTS thisMusicProduction CASCADE;
 
-\echo '\nDropping tables if they exist.\n'
+\echo '\nDropping tables if they exist.'
 
 DROP TABLE IF EXISTS thisMusicProduction.Musicians  CASCADE;
 DROP TABLE IF EXISTS thisMusicProduction.Instrument CASCADE;
@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS thisMusicProduction.Telephone  CASCADE;
 
 -----------------------------------------------
 
-\echo '\nCreating schema \'thisMusicProduction\' in which all my relational tables will reside.\n'
+\echo '\nCreating schema \'thisMusicProduction\' in which all my relational tables will reside.'
 
 -- Creating the Schema in which all my relational tables will live:
 CREATE SCHEMA thisMusicProduction;
@@ -315,5 +315,8 @@ Values
 ('159-52-1563','3140. Ontario drive');
 
 -- SELECT * FROM thisMusicProduction.Lives;
+
+-- Show all list of relations in PostgreSQL:
+\dt thisMusicProduction.*;
 
 -- done.
